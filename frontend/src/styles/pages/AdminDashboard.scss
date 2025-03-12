@@ -1,0 +1,35 @@
+@import '../variables';
+
+.admin {
+  &__card {
+    padding: $spacing-md;
+    margin-top: $spacing-lg;
+  }
+
+  &__title {
+    color: $primary-main;
+  }
+
+  &__add-button {
+    margin-bottom: $spacing-md;
+  }
+
+  &__table-container {
+    box-shadow: $card-shadow;
+  }
+
+  &__actions {
+    display: flex;
+    gap: $spacing-xs;
+  }
+
+  &__dialog {
+    &-content {
+      padding-top: $spacing-md;
+    }
+
+    &-field {
+      margin: $spacing-sm 0;
+    }
+  }
+} 

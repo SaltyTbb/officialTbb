@@ -1,0 +1,42 @@
+@import '../variables';
+
+.about {
+  &__profile-card {
+    padding: $spacing-lg;
+    margin-top: $spacing-xl;
+    text-align: center;
+  }
+
+  &__avatar {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto $spacing-md auto;
+  }
+
+  &__name {
+    color: $primary-main;
+  }
+
+  &__section {
+    margin-top: $spacing-lg;
+    text-align: left;
+
+    &-title {
+      color: $primary-main;
+    }
+  }
+
+  &__skill-card {
+    padding: $spacing-sm;
+    transition: transform 0.2s;
+    box-shadow: $card-shadow;
+
+    &:hover {
+      transform: translateY(-4px);
+    }
+  }
+
+  &__contact-info {
+    margin: $spacing-xs 0;
+  }
+} 

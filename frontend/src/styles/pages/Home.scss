@@ -1,0 +1,53 @@
+@import '../variables';
+
+.home {
+  &__chat-container {
+    margin-top: $spacing-xl;
+    padding: $spacing-md;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+    color: $primary-main;
+  }
+
+  &__message-area {
+    flex-grow: 1;
+    margin-bottom: $spacing-md;
+    overflow-y: auto;
+  }
+
+  &__message {
+    display: flex;
+    margin-bottom: $spacing-sm;
+
+    &--user {
+      justify-content: flex-end;
+    }
+
+    &--bot {
+      justify-content: flex-start;
+    }
+
+    &-bubble {
+      padding: $spacing-sm;
+      max-width: 70%;
+      border-radius: $border-radius-sm;
+
+      &--user {
+        background-color: $primary-light;
+      }
+
+      &--bot {
+        background-color: $background-paper;
+      }
+    }
+  }
+
+  &__input-container {
+    display: flex;
+    gap: $spacing-sm;
+  }
+} 

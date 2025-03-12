@@ -1,0 +1,24 @@
+@import '../variables';
+
+.navbar {
+  &__appbar {
+    background-color: rgba($primary-main, 0.95);
+    backdrop-filter: blur(8px);
+  }
+
+  &__logo {
+    text-decoration: none;
+    color: $white;
+    flex-grow: 1;
+    font-weight: 700;
+  }
+
+  &__button {
+    color: $white;
+    margin: 0 $spacing-xs;
+    
+    &:hover {
+      background-color: rgba($white, 0.1);
+    }
+  }
+} 

@@ -1,0 +1,42 @@
+@import '../variables';
+
+.blog {
+  &__container {
+    margin-top: $spacing-md;
+    margin-bottom: $spacing-md;
+  }
+
+  &__title {
+    color: $primary-main;
+    margin-bottom: $spacing-xl;
+  }
+
+  &__card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s;
+    box-shadow: $card-shadow;
+
+    &:hover {
+      transform: translateY(-4px);
+    }
+  }
+
+  &__image {
+    height: 200px;
+  }
+
+  &__content {
+    flex-grow: 1;
+  }
+
+  &__excerpt {
+    color: $text-secondary;
+  }
+
+  &__date {
+    margin-top: $spacing-sm;
+    color: $text-secondary;
+  }
+} 

@@ -1,0 +1,124 @@
+// Variables
+:root {
+  // Color Palette
+  --primary-main: #1976d2;
+  --primary-light: #42a5f5;
+  --primary-dark: #1565c0;
+  --secondary-main: #dc004e;
+  --secondary-light: #e33371;
+  --secondary-dark: #9a0036;
+  
+  // Background Colors
+  --bg-default: #ffffff;
+  --bg-paper: #f5f5f5;
+  
+  // Text Colors
+  --text-primary: rgba(0, 0, 0, 0.87);
+  --text-secondary: rgba(0, 0, 0, 0.6);
+  --text-disabled: rgba(0, 0, 0, 0.38);
+  
+  // Spacing
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  
+  // Typography
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  --font-size-small: 0.875rem;
+  --font-size-body: 1rem;
+  --font-size-title: 1.25rem;
+  --font-size-headline: 1.5rem;
+  --font-size-display: 2rem;
+  
+  // Border Radius
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 16px;
+  
+  // Shadows
+  --shadow-1: 0 2px 4px rgba(0,0,0,0.1);
+  --shadow-2: 0 4px 8px rgba(0,0,0,0.1);
+  --shadow-3: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+// Utility Classes
+.text {
+  &-primary { color: var(--primary-main); }
+  &-secondary { color: var(--secondary-main); }
+}
+
+.bg {
+  &-primary { background-color: var(--primary-main); }
+  &-secondary { background-color: var(--secondary-main); }
+}
+
+// Typography Classes
+.title {
+  font-size: var(--font-size-title);
+  font-weight: 500;
+  margin-bottom: var(--spacing-md);
+}
+
+.headline {
+  font-size: var(--font-size-headline);
+  font-weight: 600;
+  margin-bottom: var(--spacing-lg);
+}
+
+// Layout Classes
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+
+  &.main {
+    flex: 1;
+    padding: var(--spacing-xl) var(--spacing-md);
+  }
+}
+
+.card {
+  background: var(--bg-paper);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-1);
+}
+
+// Button Styles
+.btn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius-sm);
+  border: none;
+  cursor: pointer;
+  font-size: var(--font-size-body);
+  transition: all 0.2s ease;
+
+  &-primary {
+    background-color: var(--primary-main);
+    color: white;
+
+    &:hover {
+      background-color: var(--primary-dark);
+    }
+  }
+
+  &-secondary {
+    background-color: var(--secondary-main);
+    color: white;
+
+    &:hover {
+      background-color: var(--secondary-dark);
+    }
+  }
+} 

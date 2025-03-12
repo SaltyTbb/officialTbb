@@ -1,0 +1,31 @@
+@import '../variables';
+
+.login {
+  &__card {
+    padding: $spacing-lg;
+    margin-top: $spacing-xxl;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: $card-shadow;
+  }
+
+  &__title {
+    color: $primary-main;
+    text-align: center;
+  }
+
+  &__error {
+    margin-bottom: $spacing-sm;
+  }
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+  }
+
+  &__submit {
+    margin-top: $spacing-sm;
+  }
+} 

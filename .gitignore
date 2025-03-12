@@ -1,0 +1,82 @@
+# Frontend
+## dependencies
+frontend/node_modules
+frontend/.pnp
+frontend/.pnp.js
+
+## testing
+frontend/coverage
+
+## production
+frontend/build
+
+## misc
+frontend/.DS_Store
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# Backend
+## Compiled class files
+backend/target/
+backend/!.mvn/wrapper/maven-wrapper.jar
+backend/!**/src/main/**/target/
+backend/!**/src/test/**/target/
+
+## IDE specific files
+### IntelliJ IDEA
+.idea
+*.iws
+*.iml
+*.ipr
+
+### VS Code
+.vscode/
+*.code-workspace
+
+### Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+## Logs
+*.log
+logs/
+log/
+
+## OS specific files
+.DS_Store
+Thumbs.db
+
+## Environment variables
+.env
+.env.*
+!.env.example
+
+## Package files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+## Maven specific
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+## Spring Boot specific
+**/application-*.properties
+**/application-*.yml
+!**/application.properties
+!**/application.yml 
