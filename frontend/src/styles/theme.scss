@@ -1,16 +1,21 @@
 // Variables
 :root {
   // Color Palette
-  --primary-main: #1976d2;
-  --primary-light: #42a5f5;
-  --primary-dark: #1565c0;
+  --primary-main: #000000;
+  --primary-light: var(--mid-green);
+  --primary-dark: #000000; // Darker shade of dark-green
   --secondary-main: #dc004e;
   --secondary-light: #e33371;
   --secondary-dark: #9a0036;
-  
+  --light-cream: #f8f7f4;
+  --dark-cream: #c7b793;
+  --light-green: #a3b68a;
+  --mid-green: #5c724a;
+  --dark-green: #354a2f;
+
   // Background Colors
-  --bg-default: #ffffff;
-  --bg-paper: #f5f5f5;
+  --bg-default: #F8F7F4;
+  --bg-paper: #ffffff;
   
   // Text Colors
   --text-primary: rgba(0, 0, 0, 0.87);
@@ -43,6 +48,9 @@
   --shadow-1: 0 2px 4px rgba(0,0,0,0.1);
   --shadow-2: 0 4px 8px rgba(0,0,0,0.1);
   --shadow-3: 0 8px 16px rgba(0,0,0,0.1);
+
+  // Navigation
+  --navbar-height: 60px;
 }
 
 // Utility Classes

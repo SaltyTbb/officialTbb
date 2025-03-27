@@ -1,77 +1,83 @@
-import React, { useState } from 'react';
-import {
-  Container,
-  Paper,
-  TextField,
-  Button,
-  Box,
-  Typography,
-  Card,
-} from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import '../styles/pages/Home.scss';
 
 function Home() {
-  const [message, setMessage] = useState('');
-  const [chatHistory, setChatHistory] = useState([]);
+  const [greeting, setGreeting] = useState('');
+  const [quickMessage, setQuickMessage] = useState('');
+  const navigate = useNavigate();
 
-  const handleSendMessage = () => {
-    if (message.trim()) {
-      setChatHistory([...chatHistory, { text: message, sender: 'user' }]);
-      setMessage('');
-      // Here you would typically make an API call to your chatbot backend
+  useEffect(() => {
+    // Get the current hour
+    const currentHour = new Date().getHours();
+    
+    // Set the greeting based on the time of day
+    if (currentHour >= 5 && currentHour < 12) {
+      setGreeting('Good morning!');
+    } else if (currentHour >= 12 && currentHour < 18) {
+      setGreeting('Good afternoon!');
+    } else {
+      setGreeting('Good evening!');
+    }
+  }, []);
+
+  const handleQuickChat = (e) => {
+    e.preventDefault();
+    if (quickMessage.trim()) {
+      // Save the message to sessionStorage to retrieve it on the chat page
+      sessionStorage.setItem('quickMessage', quickMessage);
+      // Navigate to the chat page
+      navigate('/chat');
     }
   };
 
   return (
-    <Container maxWidth="md">
-      <Card className="home__chat-container">
-        <Typography variant="h4" gutterBottom className="home__title">
-          Welcome to My Personal Website
-        </Typography>
-        <Typography variant="body1" gutterBottom sx={{ mb: 4 }}>
-          Feel free to ask me anything!
-        </Typography>
+    <div className="home-container">
+      {/* Hero Section */}
+      <section className="hero-section">
+        <p className="hero-greeting">{greeting}</p>
+        <h1 className="hero-title">Welcome to Tbb's Personal Space</h1>
+        <p className="hero-subtitle">-I hope this frontend works.</p>
         
-        <Box className="home__message-area">
-          {chatHistory.map((msg, index) => (
-            <Box
-              key={index}
-              className={`home__message home__message--${msg.sender}`}
-            >
-              <Paper
-                className={`home__message-bubble home__message-bubble--${msg.sender}`}
-              >
-                <Typography>{msg.text}</Typography>
-              </Paper>
-            </Box>
-          ))}
-        </Box>
-
-        <Box className="home__input-container">
-          <TextField
-            fullWidth
-            variant="outlined"
-            placeholder="Type your message..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyPress={(e) => {
-              if (e.key === 'Enter') {
-                handleSendMessage();
-              }
-            }}
+        <form onSubmit={handleQuickChat} className="quick-chat-form">
+          <input
+            type="text"
+            placeholder="Ask me more about Tbb..."
+            value={quickMessage}
+            onChange={(e) => setQuickMessage(e.target.value)}
+            className="quick-chat-input"
           />
-          <Button
-            variant="contained"
-            color="primary"
-            endIcon={<SendIcon />}
-            onClick={handleSendMessage}
-          >
-            Send
-          </Button>
-        </Box>
-      </Card>
-    </Container>
+          <button type="submit" className="quick-chat-button">
+            <span className="quick-chat-button-icon">⟶</span>
+          </button>
+        </form>
+        <div className="hero-buttons">
+          <Link to="/about" className="btn btn-outline">Learn More about Tbb</Link>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="features-section">
+        <h2 className="section-title">What This Space Does</h2>
+        <div className="features-grid">
+          <div className="feature-card">
+            <div className="feature-icon">💬</div>
+            <h3 className="feature-title">Interactive Chat</h3>
+            <p className="feature-description">Engage with the AI-powered chatbot for immediate assistance and information.</p>
+          </div>
+          <div className="feature-card">
+            <div className="feature-icon">📚</div>
+            <h3 className="feature-title">Knowledge Base</h3>
+            <p className="feature-description">A simple blog to and hope Tbb remembers to update it.</p>
+          </div>
+          <div className="feature-card">
+            <div className="feature-icon">🚀</div>
+            <h3 className="feature-title">Project Showcases</h3>
+            <p className="feature-description">Explore Tbb's portfolio of projects.</p>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 }
 

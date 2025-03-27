@@ -1,34 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Container,
-  Grid,
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  CardActions,
-  Button,
-  Box,
-} from '@mui/material';
-import styled from 'styled-components';
-
-const BlogCard = styled(Card)`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  transition: transform 0.2s;
-  &:hover {
-    transform: translateY(-4px);
-  }
-`;
-
-const BlogImage = styled(CardMedia)`
-  height: 200px;
-`;
-
-const BlogContent = styled(CardContent)`
-  flex-grow: 1;
-`;
+import BlogImage from '../components/BlogImage';
+import '../styles/pages/Blog.scss';
 
 function Blog() {
   const [posts, setPosts] = useState([]);
@@ -51,48 +23,39 @@ function Blog() {
         image: 'https://via.placeholder.com/400x200',
         date: '2024-02-19',
       },
-      // Add more dummy posts as needed
+      {
+        id: 3,
+        title: 'Modern CSS Techniques',
+        excerpt: 'Explore modern CSS features that can enhance your web development workflow...',
+        image: 'https://non-existent-image.jpg', // This will use the placeholder
+        date: '2024-02-18',
+      },
     ];
     setPosts(dummyPosts);
   }, []);
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      <Typography variant="h4" gutterBottom sx={{ color: 'primary.main', mb: 4 }}>
-        Blog Posts
-      </Typography>
+    <div className="container">
+      <h1 className="blog-title">Blog Posts</h1>
 
-      <Grid container spacing={4}>
+      <div className="blog-grid">
         {posts.map((post) => (
-          <Grid item xs={12} sm={6} md={4} key={post.id}>
-            <BlogCard>
-              <BlogImage
-                image={post.image}
-                title={post.title}
-              />
-              <BlogContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {post.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {post.excerpt}
-                </Typography>
-                <Box sx={{ mt: 2 }}>
-                  <Typography variant="caption" color="text.secondary">
-                    Published on {new Date(post.date).toLocaleDateString()}
-                  </Typography>
-                </Box>
-              </BlogContent>
-              <CardActions>
-                <Button size="small" color="primary">
-                  Read More
-                </Button>
-              </CardActions>
-            </BlogCard>
-          </Grid>
+          <div className="blog-card" key={post.id}>
+            <BlogImage src={post.image} alt={post.title} />
+            <div className="blog-content">
+              <h2 className="blog-post-title">{post.title}</h2>
+              <p className="blog-excerpt">{post.excerpt}</p>
+              <div className="blog-meta">
+                <p className="blog-date">Published on {new Date(post.date).toLocaleDateString()}</p>
+              </div>
+            </div>
+            <div className="blog-actions">
+              <button className="btn btn-primary">Read More</button>
+            </div>
+          </div>
         ))}
-      </Grid>
-    </Container>
+      </div>
+    </div>
   );
 }
 

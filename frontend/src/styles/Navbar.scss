@@ -1,23 +1,36 @@
 .navbar {
-  background-color: var(--primary-main);
-  padding: var(--spacing-md) 0;
-  position: sticky;
+  background-color: transparent;
+  padding: 0;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
-  box-shadow: var(--shadow-1);
+  transition: all 0.3s ease;
+  border-bottom: none;
+  height: var(--navbar-height);
+  display: flex;
+  align-items: center;
+
+  &.scrolled {
+    background-color: var(--bg-default);
+    box-shadow: var(--shadow-1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
 
   &-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 var(--spacing-md);
+    padding: 0 var(--spacing-lg);
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
+    height: 100%;
   }
 
   &-brand {
-    color: white;
+    color: var(--primary-main);
     font-size: var(--font-size-title);
     font-weight: 600;
     text-decoration: none;
@@ -33,32 +46,52 @@
     display: flex;
     gap: var(--spacing-lg);
     align-items: center;
+    margin-left: auto;
+    padding-right: var(--spacing-xl);
   }
 
   .nav-link {
-    color: white;
+    color: var(--text-primary);
     text-decoration: none;
     font-weight: 500;
     font-size: var(--font-size-body);
-    transition: opacity 0.2s ease;
+    transition: all 0.2s ease;
     padding: var(--spacing-xs) var(--spacing-sm);
 
     &:hover {
-      opacity: 0.8;
+      color: var(--dark-green);
       text-decoration: none;
     }
 
     &.btn.btn-primary {
       background-color: transparent;
-      border: 2px solid white;
+      color: var(--default-main);
+      border: 2px solid var(--dark-green);
       padding: var(--spacing-xs) var(--spacing-md);
       border-radius: var(--border-radius-sm);
 
       &:hover {
-        background-color: white;
-        color: var(--primary-main);
+        background-color: var(--dark-green);
+        color: white;
         opacity: 1;
       }
+    }
+  }
+}
+
+// Responsive Adjustments
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0;
+    height: var(--navbar-height);
+    
+    &-container {
+      padding: 0 var(--spacing-md);
+    }
+    
+    &-links {
+      gap: var(--spacing-md);
+      padding-right: var(--spacing-md);
     }
   }
 } 

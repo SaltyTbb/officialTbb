@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <!-- Background with lighter green -->
+  <rect width="400" height="200" fill="#7a9267" />
+  
+  <!-- Image frame -->
+  <rect x="120" y="40" width="160" height="120" fill="none" stroke="#F8F7F4" stroke-width="2" />
+  
+  <!-- Mountain-like shape to represent landscape -->
+  <path d="M120,140 L160,80 L200,120 L240,60 L280,140 Z" fill="#F8F7F4" opacity="0.3" />
+  
+  <!-- Sun circle -->
+  <circle cx="240" cy="70" r="15" fill="#F8F7F4" opacity="0.4" />
+  
+  <!-- Text -->
+  <text x="200" y="190" font-family="Arial, sans-serif" font-size="12" fill="#F8F7F4" text-anchor="middle">Tbb Space</text>
+</svg> 
