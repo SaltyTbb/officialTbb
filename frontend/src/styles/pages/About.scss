@@ -177,6 +177,7 @@
   flex-wrap: wrap;
   gap: var(--spacing-sm);
   margin-top: var(--spacing-md);
+  justify-content: center;
 }
 
 .contact-button {
@@ -188,6 +189,8 @@
   text-decoration: none;
   font-weight: 500;
   transition: all 0.3s ease;
+  min-width: 100px;
+  text-align: center;
   
   &:hover {
     background-color: var(--mid-green);
@@ -259,34 +262,107 @@
   }
 }
 
-// Increase font size for timeline items
-.timeline-content {
-  h3 {
-    font-size: calc(var(--font-size-subtitle) * 1.1);
-    margin-bottom: var(--spacing-xs);
-    color: var(--dark-green);
+.timeline {
+  position: relative;
+  padding: var(--spacing-md) 0;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    width: 2px;
+    height: 100%;
+    background: var(--primary-color);
+    opacity: 0.2;
   }
-  
-  p {
-    font-size: calc(var(--font-size-body) * 1.1);
-    color: var(--text-primary);
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: var(--spacing-lg);
+    width: 100%;
     display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  
-  ul {
-    padding-left: 20px;
-    margin-top: var(--spacing-xs);
-    margin-bottom: 0;
-  }
-  
-  li {
-    font-size: calc(var(--font-size-body) * 1.1);
-    color: var(--text-primary);
-    margin-bottom: var(--spacing-xs);
-    list-style-type: disc;
-    padding-left: 5px;
+    align-items: flex-start;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 16px;
+      width: 12px;
+      height: 12px;
+      background: var(--bg-default);
+      border-radius: 50%;
+      top: 0;
+      z-index: 1;
+    }
+
+    .timeline-date {
+      position: absolute;
+      left: 16px;
+      background: var(--primary-color);
+      color: var(--text-primary);
+      padding: var(--spacing-xs) var(--spacing-sm);
+      border-radius: 20px;
+      font-size: var(--font-size-small);
+      font-weight: 500;
+      z-index: 2;
+      white-space: nowrap;
+    }
+
+    .timeline-content {
+      width: calc(100% - 40px);
+      padding: var(--spacing-sm);
+      background: var(--bg-card);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow-sm);
+      margin-left: 40px;
+      margin-top: 30px;
+
+      h3 {
+        color: var(--primary-color);
+        margin-bottom: var(--spacing-xs);
+        font-size: var(--font-size-subtitle);
+      }
+
+      p {
+        color: var(--text-secondary);
+        margin-bottom: var(--spacing-xs);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        font-size: var(--font-size-body);
+      }
+
+      ul {
+        padding-left: 18px;
+        margin-top: var(--spacing-xs);
+        margin-bottom: 0;
+        list-style: none;
+
+        li {
+          color: var(--text-secondary);
+          margin-bottom: var(--spacing-xs);
+          line-height: 1.4;
+          position: relative;
+          padding-left: 16px;
+          font-size: var(--font-size-body);
+
+          &::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+          }
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
   }
 }
 
@@ -345,37 +421,43 @@
   }
   
   .contact-buttons {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    justify-content: center;
     gap: var(--spacing-xs);
   }
   
   .contact-button {
-    width: 100%;
-    text-align: center;
+    width: auto;
+    min-width: 90px;
   }
   
-  .timeline-content {
-    h3 {
-      font-size: var(--font-size-subtitle);
-    }
-    
-    p {
-      font-size: var(--font-size-body);
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
-    
-    ul {
-      padding-left: 18px;
-      margin-top: var(--spacing-xs);
-    }
-    
-    li {
-      font-size: var(--font-size-body);
-      margin-bottom: 6px;
+  .timeline {
+    padding: var(--spacing-sm) 0;
+
+    .timeline-item {
+      margin-bottom: var(--spacing-md);
+
+      .timeline-content {
+        padding: var(--spacing-xs);
+        margin-top: 25px;
+
+        h3 {
+          font-size: var(--font-size-subtitle);
+        }
+
+        p {
+          font-size: var(--font-size-body);
+        }
+
+        ul {
+          padding-left: 16px;
+
+          li {
+            font-size: var(--font-size-body);
+            margin-bottom: 4px;
+          }
+        }
+      }
     }
   }
   
@@ -387,15 +469,6 @@
   .shopee-logo {
     height: 1.2em;
     margin-left: 5px;
-  }
-  
-  .timeline-content {
-    p {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 4px;
-    }
   }
   
   .projects-grid {

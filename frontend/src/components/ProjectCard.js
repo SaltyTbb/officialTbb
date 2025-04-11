@@ -7,7 +7,7 @@ const ProjectCard = ({
   technologies, 
   imageUrl, 
   projectUrl,
-  displayLink = false
+  displayLink
 }) => {
   const handleImageError = (e) => {
     e.target.src = '/placeholder.svg';
@@ -15,24 +15,27 @@ const ProjectCard = ({
 
   return (
     <div className="project-card">
-      <img 
-        src={imageUrl} 
-        alt={title} 
-        className="project-image" 
-        onError={handleImageError}
-      />
-      <h3>{title}</h3>
-      <p>{description}</p>
-      <div className="project-tech">
-        {technologies.map((tech, index) => (
-          <span key={index}>{tech}</span>
-        ))}
+      <div className="project-image">
+        <img 
+          src={imageUrl} 
+          alt={title} 
+          onError={handleImageError}
+        />
       </div>
-      {displayLink && ( 
-        <a href={projectUrl} className="project-link" target="_blank" rel="noopener noreferrer">
-          View Project →
-        </a>
-      )}
+      <div className="project-content">
+        <h3 className="project-title">{title}</h3>
+        <p className="project-description">{description}</p>
+        <div className="project-tech">
+          {technologies.map((tech, index) => (
+            <span key={index} className="tech-tag">{tech}</span>
+          ))}
+        </div>
+        {displayLink && ( 
+          <a href={projectUrl} className="project-link" target="_blank" rel="noopener noreferrer">
+            View Project →
+          </a>
+        )}
+      </div>
     </div>
   );
 };

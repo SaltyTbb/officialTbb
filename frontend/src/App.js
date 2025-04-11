@@ -12,6 +12,7 @@ import Blog from './pages/Blog';
 import Chat from './pages/Chat';
 import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
+import Playground from './pages/Playground';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
             <Route path="/chat" element={<Chat />} />
             <Route path="/login" element={<Login />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/playground" element={<Playground />} />
           </Routes>
         </main>
       </div>

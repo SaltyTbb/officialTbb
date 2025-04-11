@@ -1,67 +1,57 @@
 @import '../theme.scss';
 
 .project-card {
-  background-color: var(--bg-default);
-  border-radius: var(--border-radius-md);
-  padding: var(--spacing-lg);
-  box-shadow: var(--shadow-1);
-  transition: all 0.3s ease;
-  position: relative;
+  background-color: var(--bg-card);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
-  border: 1px solid rgba(53, 74, 47, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   height: 100%;
   display: flex;
   flex-direction: column;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(90deg, var(--dark-green), var(--mid-green));
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   
   &:hover {
     transform: translateY(-5px);
-    box-shadow: var(--shadow-2);
-    
-    &::before {
-      opacity: 1;
-    }
-  }
-  
-  h3 {
-    color: var(--dark-green);
-    font-size: var(--font-size-title);
-    margin-bottom: var(--spacing-sm);
-    font-weight: 600;
-  }
-  
-  p {
-    color: var(--text-secondary);
-    font-size: var(--font-size-body);
-    line-height: 1.5;
-    margin-bottom: var(--spacing-md);
-    flex-grow: 1;
+    box-shadow: var(--shadow-3);
   }
 }
 
 .project-image {
   width: 100%;
-  height: 160px;
-  object-fit: cover;
-  border-radius: var(--border-radius-sm);
-  margin-bottom: var(--spacing-md);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  height: 180px;
+  overflow: hidden;
   
-  &:hover {
-    transform: scale(1.02);
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+    
+    &:hover {
+      transform: scale(1.05);
+    }
   }
+}
+
+.project-content {
+  padding: var(--spacing-md);
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-title {
+  color: var(--dark-green);
+  margin-bottom: var(--spacing-xs);
+  font-size: var(--font-size-subtitle);
+}
+
+.project-description {
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-sm);
+  line-height: 1.5;
+  flex-grow: 1;
 }
 
 .project-tech {
@@ -69,78 +59,67 @@
   flex-wrap: wrap;
   gap: var(--spacing-xs);
   margin-bottom: var(--spacing-md);
+}
+
+.tech-tag {
+  background-color: var(--mid-green);
+  color: var(--bg-default);
+  font-size: var(--font-size-small);
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: inline-block;
   
-  span {
-    background-color: rgba(53, 74, 47, 0.1);
-    color: var(--dark-green);
-    padding: 4px 10px;
-    border-radius: 50px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    
-    &:hover {
-      background-color: var(--dark-green);
-      color: white;
-    }
+  &:hover {
+    background-color: var(--dark-green);
+    color: white;
   }
 }
 
 .project-link {
-  color: var(--dark-green);
+  display: inline-block;
+  color: var(--primary-color);
+  font-weight: 500;
   text-decoration: none;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
   margin-top: auto;
   position: relative;
-  padding-bottom: 2px;
+  align-self: flex-start;
   
   &::after {
     content: '';
     position: absolute;
-    bottom: 0;
+    bottom: -2px;
     left: 0;
     width: 0;
     height: 2px;
-    background-color: var(--dark-green);
+    background-color: var(--primary-color);
     transition: width 0.3s ease;
   }
   
-  &:hover {
-    &::after {
-      width: 100%;
-    }
+  &:hover::after {
+    width: 100%;
   }
 }
 
-// Responsive Adjustments
+// Mobile adjustments
 @media (max-width: 768px) {
-  .project-card {
-    padding: var(--spacing-md);
-    
-    h3 {
-      font-size: var(--font-size-subtitle);
-    }
-    
-    p {
-      font-size: var(--font-size-body);
-      margin-bottom: var(--spacing-sm);
-    }
-  }
-  
   .project-image {
-    height: 130px;
-    margin-bottom: var(--spacing-sm);
+    height: 150px;
   }
   
-  .project-tech {
-    gap: 6px;
-    margin-bottom: var(--spacing-sm);
-    
-    span {
-      padding: 3px 8px;
-      font-size: 0.8rem;
-    }
+  .project-content {
+    padding: var(--spacing-sm);
+  }
+  
+  .project-title {
+    font-size: calc(var(--font-size-subtitle) * 0.9);
+  }
+  
+  .project-description {
+    font-size: var(--font-size-body);
+  }
+  
+  .tech-tag {
+    font-size: calc(var(--font-size-small) * 0.9);
+    padding: 3px 8px;
   }
 } 

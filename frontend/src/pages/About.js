@@ -1,8 +1,29 @@
 import React from 'react';
 import '../styles/pages/About.scss';
+
+// Import logo
 import shopeeLogo from '../assets/shopee-logo.png';
+import antGroupLogo from '../assets/ant-icon.png';
+import igloohomeLogo from '../assets/igloo-icon.png';
+
 import ProjectCard from '../components/ProjectCard';
 import SkillsCard from '../components/SkillsCard';
+
+// Import skill icons
+import pythonIcon from '../assets/icons/python.svg';
+import golangIcon from '../assets/icons/golang.svg';
+import reactIcon from '../assets/icons/react.svg';
+import nodejsIcon from '../assets/icons/nodejs.svg';
+import postgresqlIcon from '../assets/icons/postgresql.svg';
+import redisIcon from '../assets/icons/redis.svg';
+import dockerIcon from '../assets/icons/docker.svg';
+import javaIcon from '../assets/icons/java.svg';
+
+// Import project images
+import radarChartImg from '../assets/radarChart.jpg';
+import reverseGeocodingImg from '../assets/reverseGeocoding.jpg';
+import kenkenImg from '../assets/kenken.png';
+import iglooImg from '../assets/igloo.jpg';
 
 function About() {
   // Function to handle image loading errors
@@ -10,52 +31,50 @@ function About() {
     e.target.src = '/avatar-placeholder.svg';
   };
 
-  // Project data
+  // Project data with imported images
   const projects = [
+    
     {
       title: "Student Performance Tracking",
       description: "A system to visualize student's performance.",
       technologies: ["Python", "Excel", "PyQt", "Plotly"],
-      imageUrl: "/project-student-tracking.jpg",
+      imageUrl: radarChartImg,
       projectUrl: "#"
     },
     {
       title: "Reverse Geocoding",
       description: "A system to convert latitude and longitude to address",
       technologies: ["Golang", "Geo-hash", "Redis", "PostgreSQL"],
-      imageUrl: "/project-geocoding.jpg",
+      imageUrl: reverseGeocodingImg,
       projectUrl: "#"
     },
     {
       title: "KenKen",
       description: "A game to solve KenKen puzzles",
       technologies: ["Python", "PyQt"],
-      imageUrl: "/project-kenken.jpg",
-      projectUrl: "#"
+      imageUrl: kenkenImg,
+      projectUrl: "https://github.com/SaltyTbb/KenKen",
+      displayLink: true
     },
     {
       title: "Locker Automation Testing",
       description: "An android system that performs automation testing on locker panel unlock",
       technologies: ["Kotlin", "RxKotlin", "Raspberry Pi"],
-      imageUrl: "/project-locker-testing.jpg",
+      imageUrl: iglooImg,
       projectUrl: "#"
     }
   ];
 
   // Skills data
   const skills = [
-    { icon: "/icons/python.svg", alt: "Python" },
-    { icon: "/icons/golang.svg", alt: "Golang" },
-    { icon: "/icons/react.svg", alt: "React" },
-    { icon: "/icons/nodejs.svg", alt: "Node.js" },
-    { icon: "/icons/postgresql.svg", alt: "PostgreSQL" },
-    { icon: "/icons/redis.svg", alt: "Redis" },
-    { icon: "/icons/docker.svg", alt: "Docker" },
-    { icon: "/icons/kubernetes.svg", alt: "Kubernetes" },
-    { icon: "/icons/aws.svg", alt: "AWS" },
-    { icon: "/icons/git.svg", alt: "Git" },
-    { icon: "/icons/linux.svg", alt: "Linux" },
-    { icon: "/icons/ci-cd.svg", alt: "CI/CD" }
+    { icon: golangIcon, alt: "Go" },
+    { icon: javaIcon, alt: "Java" },
+    { icon: pythonIcon, alt: "Python" },
+    { icon: reactIcon, alt: "React" },
+    { icon: nodejsIcon, alt: "Node.js" },
+    { icon: postgresqlIcon, alt: "PostgreSQL" },
+    { icon: redisIcon, alt: "Redis" },
+    { icon: dockerIcon, alt: "Docker" },
   ];
 
   return (
@@ -107,6 +126,30 @@ function About() {
                 </ul>
               </div>
             </div>
+            <div className="timeline-item">
+              <div className="timeline-date">2019</div>
+              <div className="timeline-content">
+                <h3>Java Developer Intern</h3>
+                <p>Ant Group <img src={antGroupLogo} alt="Ant Group Logo" className="shopee-logo" /></p>
+                <ul>
+                  <li>Built scalable microservices architecture</li>
+                  <li>Implemented real-time data processing system</li>
+                  <li>Optimized database queries and improved performance</li>
+                </ul>
+              </div>
+            </div>
+            <div className="timeline-item">
+              <div className="timeline-date">2018</div>
+              <div className="timeline-content">
+                <h3>Software Developer Intern</h3>
+                <p>Igloohome <img src={igloohomeLogo} alt="Igloohome Logo" className="shopee-logo" /></p>
+                <ul>
+                  <li>Developed RESTful APIs for mobile applications</li>
+                  <li>Created automated testing framework</li>
+                  <li>Implemented CI/CD pipeline using Jenkins</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -121,7 +164,7 @@ function About() {
                 technologies={project.technologies}
                 imageUrl={project.imageUrl}
                 projectUrl={project.projectUrl}
-                displayLink={project.displayLink}
+                displayLink={project.displayLink || false}
               />
             ))}
           </div>

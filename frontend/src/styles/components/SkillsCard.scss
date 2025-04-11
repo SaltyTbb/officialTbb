@@ -10,13 +10,36 @@
   transition: all 0.3s ease;
   border: 1px solid rgba(53, 74, 47, 0.1);
   aspect-ratio: 1;
+  position: relative;
   
   &:hover {
     transform: translateY(-4px);
     border-color: var(--dark-green);
     box-shadow: var(--shadow-1);
     background-color: rgba(53, 74, 47, 0.02);
+
+    .skill-tooltip {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
   }
+}
+
+.skill-tooltip {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background-color: var(--dark-green);
+  color: white;
+  padding: 5px 10px;
+  border-radius: var(--border-radius-sm);
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 10;
 }
 
 .skills-icon {

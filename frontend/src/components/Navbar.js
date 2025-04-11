@@ -30,9 +30,13 @@ function Navbar() {
           <Link to="/about" className="nav-link">
             About
           </Link>
-          <Link to="/blog" className="nav-link">
+          {/* <Link to="/blog" className="nav-link">
             Blog
+          </Link> */}
+          <Link to="/playground" className="nav-link">
+            Playground
           </Link>
+
           <Link to="/chat" className="nav-link">
             Chat
           </Link>
