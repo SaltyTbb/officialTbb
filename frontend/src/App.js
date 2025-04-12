@@ -14,6 +14,9 @@ import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
 import Playground from './pages/Playground';
 
+// Games
+import SchulteGrid from './pages/games/SchulteGrid';
+
 function App() {
   return (
     <Router>
@@ -28,6 +31,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/playground" element={<Playground />} />
+            <Route path="/games/schulte" element={<SchulteGrid />} />
           </Routes>
         </main>
       </div>

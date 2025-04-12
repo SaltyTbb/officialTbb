@@ -3,32 +3,33 @@ import '../styles/pages/Playground.scss';
 import { Link } from 'react-router-dom';
 import ProjectCard from '../components/ProjectCard';
 
-// Note: You'll need to add these images to your assets folder
-// If images are not available, the component will fallback to placeholders
-// Example paths, replace with actual image paths when available
+// Import image directly if it exists in assets folder
+import schultePlaceholder from '../assets/game-icons/schulte_cover.png';
+
+// Fallback URLs for the other games (commented out for now)
 const tetrisPlaceholder = '/game-placeholders/tetris.jpg';
 const snakePlaceholder = '/game-placeholders/snake.jpg';
-const schultePlaceholder = '/game-placeholders/schulte.jpg';
+// const schultePlaceholder = '../assets/game-icons/schulte_cover.png';
 
 function Playground() {
   // Game data
   const games = [
-    {
-      title: "Tetris",
-      description: "A classic block-stacking puzzle game. Arrange falling tetrominoes to create complete rows and score points.",
-      technologies: [],
-      imageUrl: tetrisPlaceholder,
-      projectUrl: "/games/tetris",
-      displayLink: true
-    },
-    {
-      title: "Snake",
-      description: "Control a growing snake to eat food while avoiding walls and your own tail. How long can you survive?",
-      technologies: [],
-      imageUrl: snakePlaceholder,
-      projectUrl: "/games/snake",
-      displayLink: true
-    },
+    // {
+    //   title: "Tetris",
+    //   description: "A classic block-stacking puzzle game. Arrange falling tetrominoes to create complete rows and score points.",
+    //   technologies: [],
+    //   imageUrl: tetrisPlaceholder,
+    //   projectUrl: "/games/tetris",
+    //   displayLink: true
+    // },
+    // {
+    //   title: "Snake",
+    //   description: "Control a growing snake to eat food while avoiding walls and your own tail. How long can you survive?",
+    //   technologies: [],
+    //   imageUrl: snakePlaceholder,
+    //   projectUrl: "/games/snake",
+    //   displayLink: true
+    // },
     {
       title: "Schulte Grid",
       description: "A visual attention training exercise. Find the numbers in order as quickly as possible to improve concentration.",
@@ -43,7 +44,7 @@ function Playground() {
     <div className="playground-container">
       <div className="playground-header">
         <h1>Game Playground</h1>
-        <p>Take a break and enjoy some classic games. Click on any game card to start playing!</p>
+        <p>A place for me to put some of my random ideas. Have fun :)</p>
       </div>
       
       <div className="games-grid">
