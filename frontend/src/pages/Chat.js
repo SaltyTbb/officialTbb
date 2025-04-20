@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import '../styles/pages/Chat.scss';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
@@ -24,58 +24,25 @@ function Chat() {
     return process.env[name] || defaultValue;
   };
 
-  // API endpoint URL from environment variables - simplified for same-machine deployment
+  // API endpoint URL from environment variables
   const API_BASE_URL = getEnvVar('REACT_APP_API_BASE_URL', 'http://localhost:8000');
-  
-  // Use the simplified endpoint that will be proxied by nginx
+
+  // Use the simplified endpoint that will be proxied by nginx in production
   const API_URL = `${window.location.origin}/chat`;
-  
+
   // For development, use the direct backend URL when not running through the proxy
   const DEV_API_URL = `${API_BASE_URL}/api/v1/chat`;
-  
+
   // Determine which URL to use based on environment
   const CHAT_API_URL = process.env.NODE_ENV === 'production' ? API_URL : DEV_API_URL;
-  
+
+  console.log('Chat API URL:', CHAT_API_URL); // Add logging to help debug
+
   // Timeout duration in milliseconds from environment variables
   const TIMEOUT_DURATION = parseInt(getEnvVar('REACT_APP_API_TIMEOUT', '10000'));
 
-  useEffect(() => {
-    // Check if a quick message exists in sessionStorage
-    const quickMessage = sessionStorage.getItem('quickMessage');
-    if (quickMessage) {
-      // Add the message to chat history
-      setChatHistory([{ text: quickMessage, sender: 'user' }]);
-      
-      // Send to API instead of simulating
-      sendToGeminiAPI(quickMessage);
-      
-      // Clear the quick message from sessionStorage
-      sessionStorage.removeItem('quickMessage');
-    }
-  }, []);
-
-  // Scroll to bottom whenever chat history changes
-  useEffect(() => {
-    messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [chatHistory]);
-
-  // Auto-resize the textarea
-  useEffect(() => {
-    if (textareaRef.current) {
-      // Reset height to auto to get the correct scrollHeight
-      textareaRef.current.style.height = 'auto';
-      // Set the height to the scrollHeight
-      const scrollHeight = textareaRef.current.scrollHeight;
-      if (scrollHeight <= 120) { // Max height is 120px
-        textareaRef.current.style.height = scrollHeight + 'px';
-      } else {
-        textareaRef.current.style.height = '120px';
-      }
-    }
-  }, [message]);
-
   // Typewriter effect function
-  const startTypewriterEffect = (messageId, fullText) => {
+  const startTypewriterEffect = useCallback((messageId, fullText) => {
     let i = 0;
     const typingSpeed = 5; // milliseconds per character - reduced from 20 to 5 for faster typing
     
@@ -126,9 +93,10 @@ function Chat() {
     };
     
     typeNextChar();
-  };
+  }, [setChatHistory, setTypingMessages]);
 
-  const sendToGeminiAPI = async (text) => {
+  // Define sendToGeminiAPI with useCallback to avoid dependency cycle
+  const sendToGeminiAPI = useCallback(async (text) => {
     setIsLoading(true);
     try {
       // Add loading message with loading indicator
@@ -221,7 +189,42 @@ function Chat() {
       });
       setIsLoading(false);
     }
-  };
+  }, [CHAT_API_URL, TIMEOUT_DURATION, startTypewriterEffect]);
+
+  useEffect(() => {
+    // Check if a quick message exists in sessionStorage
+    const quickMessage = sessionStorage.getItem('quickMessage');
+    if (quickMessage) {
+      // Add the message to chat history
+      setChatHistory([{ text: quickMessage, sender: 'user' }]);
+      
+      // Send to API instead of simulating
+      sendToGeminiAPI(quickMessage);
+      
+      // Clear the quick message from sessionStorage
+      sessionStorage.removeItem('quickMessage');
+    }
+  }, [sendToGeminiAPI]);
+
+  // Scroll to bottom whenever chat history changes
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatHistory]);
+
+  // Auto-resize the textarea
+  useEffect(() => {
+    if (textareaRef.current) {
+      // Reset height to auto to get the correct scrollHeight
+      textareaRef.current.style.height = 'auto';
+      // Set the height to the scrollHeight
+      const scrollHeight = textareaRef.current.scrollHeight;
+      if (scrollHeight <= 120) { // Max height is 120px
+        textareaRef.current.style.height = scrollHeight + 'px';
+      } else {
+        textareaRef.current.style.height = '120px';
+      }
+    }
+  }, [message]);
 
   const handleSendMessage = () => {
     if (message.trim() && !isLoading) {
@@ -269,8 +272,10 @@ function Chat() {
   // Custom components for markdown rendering
   const markdownComponents = {
     // Customize link rendering
-    a: ({ node, ...props }) => (
-      <a {...props} target="_blank" rel="noopener noreferrer" className="markdown-link" />
+    a: ({ node, children, ...props }) => (
+      <a {...props} target="_blank" rel="noopener noreferrer" className="markdown-link">
+        {children || 'Link'}
+      </a>
     ),
     // Customize code blocks
     code: ({ node, inline, ...props }) => (
@@ -281,9 +286,9 @@ function Chat() {
           </div>
     ),
     // Customize headings
-    h1: ({ node, ...props }) => <h3 className="markdown-heading" {...props} />,
-    h2: ({ node, ...props }) => <h4 className="markdown-heading" {...props} />,
-    h3: ({ node, ...props }) => <h5 className="markdown-heading" {...props} />,
+    h1: ({ node, children, ...props }) => <h3 className="markdown-heading" {...props}>{children || 'Heading'}</h3>,
+    h2: ({ node, children, ...props }) => <h4 className="markdown-heading" {...props}>{children || 'Heading'}</h4>,
+    h3: ({ node, children, ...props }) => <h5 className="markdown-heading" {...props}>{children || 'Heading'}</h5>,
     // Customize lists
     ul: ({ node, ...props }) => <ul className="markdown-list" {...props} />,
     ol: ({ node, ...props }) => <ol className="markdown-list" {...props} />,

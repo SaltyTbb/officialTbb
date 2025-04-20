@@ -16,7 +16,7 @@ function Login() {
     try {
       // Here you would typically make an API call to your backend
       // For now, we'll use dummy authentication
-      if (username === 'admin' && password === 'password') {
+      if (username === 'admin' && password === '123!QWE!') {
         // Store the token in localStorage
         localStorage.setItem('authToken', 'dummy-token');
         navigate('/admin');

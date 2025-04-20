@@ -6,6 +6,9 @@ import shopeeLogo from '../assets/shopee-logo.png';
 import antGroupLogo from '../assets/ant-icon.png';
 import igloohomeLogo from '../assets/igloo-icon.png';
 
+// Import resume
+import resumePDF from '../static/Tang_Yuanbo_Resume.pdf';
+
 import ProjectCard from '../components/ProjectCard';
 import SkillsCard from '../components/SkillsCard';
 
@@ -98,9 +101,12 @@ function About() {
             I love creating beautiful and functional services that provide great user experiences.
           </p>
           <div className="contact-buttons">
-            <a href="mailto:yuanbo1996@gmail.com" className="contact-button">
-              {/* TODO: Add resume */}
-              Resume
+            <a 
+              href={resumePDF} 
+              download="Tang_Yuanbo_Resume.pdf" 
+              className="contact-button"
+            >
+              Download Resume
             </a>
             <a href="https://www.linkedin.com/in/tang-yuanbo/" target="_blank" rel="noopener noreferrer" className="contact-button">
               LinkedIn
