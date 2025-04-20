@@ -5,18 +5,20 @@ import (
 	"time"
 
 	"github.com/SaltyTbb/backend/internal/controllers"
+	"github.com/SaltyTbb/backend/internal/logger"
 	"github.com/SaltyTbb/backend/internal/middleware"
 	"github.com/gin-gonic/gin"
 )
 
 func initAndSetupMiddleware(router *gin.Engine) {
+	// Initialize logger
+	logger.Init()
 
-	middleware.InitLogger()
+	// Setup middleware
 	router.Use(middleware.Logger())
-
 	router.Use(middleware.CorsMiddleware())
+	router.Use(middleware.IPRestrictionMiddleware())
 	router.Use(gin.Recovery())
-
 }
 
 func SetupRoutes(router *gin.Engine) {

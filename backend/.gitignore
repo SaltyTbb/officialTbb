@@ -25,4 +25,9 @@ vendor/
 .vscode/
 
 # Build output
-bin/ 
+bin/
+
+# Log files and directories
+*.log
+logs/
+log/ 

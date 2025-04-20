@@ -20,5 +20,5 @@ func NewChatbotService(chatbotRepository repos.ChatbotRepository) ChatbotService
 }
 
 func (s *chatbotService) Chat(ctx *gin.Context, req *models.ChatbotReq) (message string, err *mErr.MError) {
-	return s.chatbotRepository.Chat(ctx, req)
+	return s.chatbotRepository.Chat(ctx, req.Message)
 }

@@ -2,7 +2,6 @@ package logger
 
 import (
 	"context"
-	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -13,16 +12,27 @@ import (
 const (
 	// TraceIDKey is the key used to identify the trace ID in the context
 	TraceIDKey = "traceID"
+	// DefaultLogDir is the default directory for log files
+	DefaultLogDir = "logs"
 )
 
 // Init initializes the zerolog logger
 func Init() {
 	// Configure zerolog
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
-	log.Logger = zerolog.New(os.Stdout).
+
+	// Get the shared log writer that writes to both console and file
+	writer := GetLogWriter()
+
+	log.Logger = zerolog.New(writer).
 		With().
 		Timestamp().
 		Logger()
+
+	// Log the file path if file logging is enabled
+	if logPath := GetLogFilePath(); logPath != "" {
+		log.Info().Str("logFile", logPath).Msg("File logging enabled")
+	}
 }
 
 // WithTraceID adds a trace ID to the logger from the context

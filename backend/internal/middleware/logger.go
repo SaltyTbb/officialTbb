@@ -1,12 +1,13 @@
 package middleware
 
 import (
-	"os"
+	"bytes"
+	"io"
 	"time"
 
+	"github.com/SaltyTbb/backend/internal/logger"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
 
@@ -15,39 +16,47 @@ const (
 	RequestIDKey = "requestID"
 	// StartTimeKey is the key used to store the request start time
 	StartTimeKey = "startTime"
+	// MaxBodyLogSize is the maximum size of the body to log
+	MaxBodyLogSize = 1024 // 1KB
 )
 
-// InitLogger initializes the zerolog logger
+// bodyLogWriter is a simple response writer wrapper to capture the body
+type bodyLogWriter struct {
+	gin.ResponseWriter
+	body *bytes.Buffer
+}
+
+func (w bodyLogWriter) Write(b []byte) (int, error) {
+	w.body.Write(b)
+	return w.ResponseWriter.Write(b)
+}
+
+// InitLogger initializes the zerolog logger - deprecated, use logger.Init() instead
 func InitLogger() {
-	// Configure zerolog
-	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
-	log.Logger = zerolog.New(os.Stdout).
-		With().
-		Timestamp().
-		Logger()
+	// This function is kept for backward compatibility but should not be used
+	// Use logger.Init() from the logger package instead
+	logger.Init()
 }
 
 // logRequestStart logs information about the incoming request
-func before(c *gin.Context, requestID string) {
+func before(c *gin.Context, requestID string, body string) {
 	log.Info().
 		Str("requestID", requestID).
 		Str("method", c.Request.Method).
 		Str("path", c.Request.URL.Path).
 		Str("clientIP", c.ClientIP()).
-		Str("userAgent", c.Request.UserAgent()).
+		Str("requestBody", body).
 		Msg("Incoming request")
 }
 
 // logRequestEnd logs information about the outgoing response
-func after(c *gin.Context, requestID string, duration time.Duration) {
+func after(c *gin.Context, requestID string, duration time.Duration, body string) {
 	log.Info().
 		Str("requestID", requestID).
 		Int("status", c.Writer.Status()).
-		Dur("duration", duration).
-		Int("responseSize", c.Writer.Size()).
-		Str("method", c.Request.Method).
-		Str("path", c.Request.URL.Path).
+		Dur("duration_ms", duration).
 		Str("clientIP", c.ClientIP()).
+		Str("responseBody", body).
 		Msg("Outgoing response")
 }
 
@@ -58,13 +67,41 @@ func Logger() gin.HandlerFunc {
 		c.Set(RequestIDKey, requestID)
 		startTime := time.Now()
 
-		before(c, requestID)
+		// Capture request body
+		var requestBody string
+		if c.Request.Body != nil {
+			bodyBytes, _ := io.ReadAll(c.Request.Body)
+			if len(bodyBytes) > 0 {
+				if len(bodyBytes) > MaxBodyLogSize {
+					bodyBytes = bodyBytes[:MaxBodyLogSize]
+				}
+				requestBody = string(bodyBytes)
+				// Restore the body for further processing
+				c.Request.Body = io.NopCloser(bytes.NewBuffer(bodyBytes))
+			}
+		}
 
+		// Log request
+		before(c, requestID, requestBody)
+
+		// Create a body writer for response
+		bodyWriter := &bodyLogWriter{
+			ResponseWriter: c.Writer,
+			body:           &bytes.Buffer{},
+		}
+		c.Writer = bodyWriter
+
+		// Process request
 		c.Next()
 
+		// Log response
 		duration := time.Since(startTime)
+		responseBody := bodyWriter.body.String()
+		if len(responseBody) > MaxBodyLogSize {
+			responseBody = responseBody[:MaxBodyLogSize]
+		}
 
-		after(c, requestID, duration)
+		after(c, requestID, duration, responseBody)
 	}
 }
 

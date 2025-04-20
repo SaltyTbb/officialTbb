@@ -9,7 +9,6 @@ import (
 	"github.com/SaltyTbb/backend/internal/consts"
 	"github.com/SaltyTbb/backend/internal/logger"
 	"github.com/SaltyTbb/backend/internal/mErr"
-	"github.com/SaltyTbb/backend/internal/models"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/generative-ai-go/genai"
@@ -17,13 +16,18 @@ import (
 )
 
 type ChatbotRepository interface {
-	Chat(ctx *gin.Context, req *models.ChatbotReq) (message string, err *mErr.MError)
+	Chat(ctx *gin.Context, req string) (message string, err *mErr.MError)
 }
 
 type clientInfo struct {
 	client       *genai.Client
 	model        *genai.GenerativeModel
+	session      *ChatSession
 	lastAccessed time.Time
+}
+
+type ChatSession struct {
+	History []*genai.Content
 }
 
 type chatbotRepository struct {
@@ -64,7 +68,7 @@ func (r *chatbotRepository) cleanupIdleClients() {
 	}
 }
 
-func (r *chatbotRepository) getOrCreateClient(ip string) (*genai.GenerativeModel, *mErr.MError) {
+func (r *chatbotRepository) getOrCreateClient(ip string) (*clientInfo, *mErr.MError) {
 	// First check if client already exists
 	r.mutex.RLock()
 	info, exists := r.clientPool[ip]
@@ -76,7 +80,7 @@ func (r *chatbotRepository) getOrCreateClient(ip string) (*genai.GenerativeModel
 		r.mutex.Lock()
 		info.lastAccessed = time.Now()
 		r.mutex.Unlock()
-		return info.model, nil
+		return info, nil
 	}
 
 	// Check if pool limit is reached
@@ -94,6 +98,13 @@ func (r *chatbotRepository) getOrCreateClient(ip string) (*genai.GenerativeModel
 
 	model := client.GenerativeModel(config.GetGeminiConfig().Model)
 
+	model.SystemInstruction = &genai.Content{
+		Parts: []genai.Part{
+			genai.Text(config.GetGeminiConfig().Background),
+		},
+		Role: "system",
+	}
+
 	r.mutex.Lock()
 	// Check limit again inside the lock to prevent race conditions
 	if len(r.clientPool) >= clientLimit && clientLimit > 0 {
@@ -106,21 +117,31 @@ func (r *chatbotRepository) getOrCreateClient(ip string) (*genai.GenerativeModel
 		client:       client,
 		model:        model,
 		lastAccessed: time.Now(),
+		session: &ChatSession{
+			History: []*genai.Content{},
+		},
 	}
 	r.mutex.Unlock()
 
-	return model, nil
+	return r.clientPool[ip], nil
 }
 
-func (r *chatbotRepository) Chat(ctx *gin.Context, req *models.ChatbotReq) (message string, err *mErr.MError) {
+func (r *chatbotRepository) Chat(ctx *gin.Context, req string) (message string, err *mErr.MError) {
 	ip := ctx.ClientIP()
-	model, err := r.getOrCreateClient(ip)
+
+	clientInfo, err := r.getOrCreateClient(ip)
 	if err != nil {
 		logger.WithTraceID(ctx).Error().Err(err).Msg("Failed to create client")
 		return "", mErr.New(consts.ERROR_CODE_INTERNAL_ERROR, consts.ERROR_MESSAGE_INTERNAL_ERROR)
 	}
 
-	response, errr := model.GenerateContent(ctx.Request.Context(), genai.Text(req.Message))
+	cs := clientInfo.model.StartChat()
+	cs.History = clientInfo.session.History
+
+	// Log the request message
+	logger.WithTraceID(ctx).Info().Str("request", req).Str("ip", ip).Msg("Request sent to Gemini")
+
+	response, errr := cs.SendMessage(ctx.Request.Context(), genai.Text(req))
 	if errr != nil {
 		logger.WithTraceID(ctx).Error().Err(errr).Msg("Failed to generate content")
 		return "", mErr.New(consts.ERROR_CODE_INTERNAL_ERROR, consts.ERROR_MESSAGE_INTERNAL_ERROR)
@@ -132,5 +153,11 @@ func (r *chatbotRepository) Chat(ctx *gin.Context, req *models.ChatbotReq) (mess
 		return "", mErr.New(consts.ERROR_CODE_INTERNAL_ERROR, consts.ERROR_MESSAGE_INTERNAL_ERROR)
 	}
 
-	return string(text), nil
+	// Log the response from Gemini
+	responseText := string(text)
+	logger.WithTraceID(ctx).Info().Str("response", responseText).Str("ip", ip).Msg("Response received from Gemini")
+
+	clientInfo.session.History = append(clientInfo.session.History, response.Candidates[0].Content)
+
+	return responseText, nil
 }

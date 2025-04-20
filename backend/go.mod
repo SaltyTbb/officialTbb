@@ -1,11 +1,12 @@
 module github.com/SaltyTbb/backend
 
-go 1.22.5
+go 1.23
 
 require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/google/generative-ai-go v0.19.0
 	github.com/google/uuid v1.6.0
+	github.com/joho/godotenv v1.5.1
 	github.com/rs/zerolog v1.34.0
 	google.golang.org/api v0.186.0
 )

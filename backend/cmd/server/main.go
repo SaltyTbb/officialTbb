@@ -6,6 +6,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/SaltyTbb/backend/internal/config"
 	"github.com/SaltyTbb/backend/internal/controllers"
 	"github.com/SaltyTbb/backend/internal/routes"
 	"github.com/gin-gonic/gin"
@@ -19,8 +20,8 @@ func main() {
 	router := gin.Default()
 
 	controllers.InitAllController(router)
-
 	routes.SetupRoutes(router)
+	config.NewGeminiConfig()
 
 	// Define server port
 	port := os.Getenv("PORT")

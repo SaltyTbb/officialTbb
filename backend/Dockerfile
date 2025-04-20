@@ -1,26 +1,52 @@
-FROM golang:1.19-alpine AS builder
+FROM golang:1.23-alpine AS builder
 
-WORKDIR /app
+# Install git and other necessary build tools
+RUN apk add --no-cache git ca-certificates tzdata gcc musl-dev
 
-# Copy go mod and sum files
-COPY go.mod go.sum ./
+# Set working directory
+WORKDIR /src
+
+# Copy all files
+COPY . .
+
+# Print directories for debugging
+RUN echo "==== Directory Structure ====" && \
+    ls -la . && \
+    echo "==== Command Directory ====" && \
+    ls -la ./cmd && \
+    echo "==== Server Directory ====" && \
+    ls -la ./cmd/server
 
 # Download dependencies
 RUN go mod download
 
-# Copy source code
-COPY . .
+# Go to server directory and build
+RUN cd cmd/server && \
+    go build -o /app/main
 
-# Build the application
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main ./cmd/server/main.go
-
-# Use a small image for the final image
+# Start fresh with a clean image
 FROM alpine:latest
+
+# Add necessary runtime packages
+RUN apk --no-cache add ca-certificates tzdata
 
 WORKDIR /app
 
-# Copy the binary from the builder stage
+# Copy the binary
 COPY --from=builder /app/main .
+
+# Copy required static files
+COPY internal/static/ /app/internal/static/
+
+# Copy .env file
+COPY .env .
+
+# Create logs directory
+RUN mkdir -p /app/logs && chmod -R 755 /app/logs
+
+# Set environment variables
+ENV GIN_MODE=release
+ENV PORT=8000
 
 # Expose port 8000
 EXPOSE 8000
