@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Container,
-  Card,
-  TextField,
-  Button,
-  Typography,
-  Box,
-  Alert,
-} from '@mui/material';
+import { Typography, Box, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import '../styles/pages/Login.scss';
 
@@ -24,7 +16,7 @@ function Login() {
     try {
       // Here you would typically make an API call to your backend
       // For now, we'll use dummy authentication
-      if (username === 'admin' && password === 'password') {
+      if (username === 'admin' && password === '123!QWE!') {
         // Store the token in localStorage
         localStorage.setItem('authToken', 'dummy-token');
         navigate('/admin');
@@ -37,52 +29,58 @@ function Login() {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Card className="login__card">
-        <Typography variant="h4" gutterBottom className="login__title">
+    <div className="login-container">
+      <section className="login-section">
+        <Typography variant="h4" className="section-title">
           Admin Login
         </Typography>
         
         {error && (
-          <Alert severity="error" className="login__error">
+          <Alert severity="error" className="login-error">
             {error}
           </Alert>
         )}
 
-        <form onSubmit={handleSubmit} className="login__form">
-          <TextField
-            label="Username"
-            variant="outlined"
-            fullWidth
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-          
-          <TextField
-            label="Password"
-            type="password"
-            variant="outlined"
-            fullWidth
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+        <div className="login-card">
+          <form onSubmit={handleSubmit} className="login-form">
+            <div className="form-group">
+              <label htmlFor="username">Username</label>
+              <input
+                id="username"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                className="login-input"
+                placeholder="Enter your username"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="login-input"
+                placeholder="Enter your password"
+              />
+            </div>
 
-          <Box className="login__submit">
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              fullWidth
-              size="large"
-            >
-              Login
-            </Button>
-          </Box>
-        </form>
-      </Card>
-    </Container>
+            <Box className="login-submit">
+              <button
+                type="submit"
+                className="login-button"
+              >
+                Login
+              </button>
+            </Box>
+          </form>
+        </div>
+      </section>
+    </div>
   );
 }
 

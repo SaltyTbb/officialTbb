@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: tbb-backend
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./backend/logs:/app/logs
+    restart: unless-stopped
+    networks:
+      - tbb-network
+    environment:
+      # These settings allow the frontend container to communicate with backend
+      # while still restricting external access
+      - ALLOWED_IPS=${ALLOWED_IPS:-*}
+      - ALLOW_DOCKER_INTERNAL=true
+
+networks:
+  tbb-network:
+    driver: bridge 
